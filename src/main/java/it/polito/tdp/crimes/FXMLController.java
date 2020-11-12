@@ -25,10 +25,10 @@ public class FXMLController {
     private URL location;
 
     @FXML // fx:id="boxCategoria"
-    private ComboBox<?> boxCategoria; // Value injected by FXMLLoader
+    private ComboBox<String> boxCategoria; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxMese"
-    private ComboBox<?> boxMese; // Value injected by FXMLLoader
+    private ComboBox<Integer> boxMese; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnAnalisi"
     private Button btnAnalisi; // Value injected by FXMLLoader
@@ -49,7 +49,20 @@ public class FXMLController {
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
+    	txtResult.clear();
+    	String categoria= boxCategoria.getValue(); 
+    	if(categoria== null) {
+    		txtResult.appendText("seleziona categoria");
+    		return; 
+    	}
 
+    	Integer mese= boxMese.getValue();  
+    	if(mese== null) {
+    		txtResult.appendText("seleziona mese");
+    		return; 
+    	}
+
+    	this.model.creaGrafo(categoria, mese);
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -64,6 +77,8 @@ public class FXMLController {
     }
     
     public void setModel(Model model) {
-    	this.model = model;
+    	this.model= model; 
+    	this.boxCategoria.getItems().addAll(this.model.getCategorie()); 
+    	this.boxMese.getItems().addAll(this.model.getMesi()); 
     }
 }
